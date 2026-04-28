@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>探学 — 你的行程，你的专属研学手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-dark:   #1E3A0F;
+  --green-mid:    #2D5016;
+  --green-soft:   #4A7C2F;
+  --green-light:  #E8F0E0;
+  --green-pale:   #F2F7ED;
+  --amber:        #C4852A;
+  --amber-light:  #F5E6C8;
+  --amber-pale:   #FDF6E9;
+  --ink:          #1A1A14;
+  --ink-mid:      #3D3D35;
+  --ink-muted:    #6B6B60;
+  --paper:        #FAF8F2;
+  --paper-warm:   #F5F1E8;
+  --paper-deep:   #EDE9DF;
+  --white:        #FFFFFF;
+  --serif: 'Noto Serif SC', Georgia, serif;
+  --sans:  'Noto Sans SC', system-ui, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 2px 8px rgba(30,58,15,0.08);
+  --shadow-md: 0 8px 32px rgba(30,58,15,0.12);
+  --shadow-lg: 0 24px 64px rgba(30,58,15,0.16);
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--paper-warm); }
+::-webkit-scrollbar-thumb { background: var(--green-soft); border-radius: 3px; }
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 68px; display: flex; align-items: center;
+  padding: 0 48px;
+  background: rgba(250,248,242,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(45,80,22,0.08);
+  transition: all 0.3s ease;
+}
+nav.scrolled { box-shadow: 0 4px 24px rgba(30,58,15,0.08); }
+.nav-logo {
+  font-family: var(--serif); font-size: 22px; font-weight: 700;
+  color: var(--green-mid); letter-spacing: 0.05em; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo-dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+.nav-links { display: flex; gap: 36px; margin-left: 56px; }
+.nav-links a {
+  font-size: 15px; color: var(--ink-mid); text-decoration: none;
+  font-weight: 400; transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1.5px; background: var(--green-mid);
+  transform: scaleX(0); transition: transform 0.2s ease;
+}
+.nav-links a:hover { color: var(--green-mid); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.btn-ghost {
+  font-size: 14px; color: var(--ink-mid); background: none;
+  border: none; cursor: pointer; padding: 8px 16px;
+  font-family: var(--sans); transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--green-mid); }
+.btn-primary {
+  font-size: 14px; font-weight: 500; font-family: var(--sans);
+  background: var(--green-mid); color: var(--white);
+  border: none; border-radius: var(--radius-sm); cursor: pointer;
+  padding: 10px 22px; transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; padding: 120px 48px 80px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 80px;
+  position: relative; overflow: hidden;
+}
+.hero-bg-decor {
+  position: absolute; top: -60px; right: -80px; width: 600px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(232,240,224,0.6) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-bg-lines {
+  position: absolute; bottom: 0; left: 0; right: 0; top: 0;
+  background-image:
+    linear-gradient(rgba(45,80,22,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,80,22,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-light); color: var(--green-mid);
+  border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500;
+  margin-bottom: 28px;
+}
+.hero-tag-dot { width: 6px; height: 6px; background: var(--green-soft); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+
+.hero-title {
+  font-family: var(--serif); font-size: 58px; font-weight: 700;
+  line-height: 1.2; color: var(--ink); margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+.hero-title em { font-style: normal; color: var(--green-mid); }
+.hero-title .line2 { color: var(--ink-mid); font-size: 46px; }
+.hero-sub {
+  font-size: 17px; color: var(--ink-muted); line-height: 1.9;
+  margin-bottom: 40px; max-width: 460px;
+}
+.hero-sub strong { color: var(--green-mid); font-weight: 500; }
+.hero-btns { display: flex; gap: 16px; align-items: center; margin-bottom: 56px; }
+.btn-hero-main {
+  background: var(--green-mid); color: var(--white);
+  padding: 16px 32px; border-radius: var(--radius-sm);
+  font-size: 16px; font-weight: 500; font-family: var(--sans);
+  border: none; cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-hero-main:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(30,58,15,0.25); }
+.btn-hero-sec {
+  background: none; color: var(--green-mid);
+  padding: 16px 28px; border-radius: var(--radius-sm);
+  font-size: 15px; font-weight: 500; font-family: var(--sans);
+  border: 1.5px solid rgba(45,80,22,0.3); cursor: pointer; transition: all 0.25s;
+}
+.btn-hero-sec:hover { border-color: var(--green-mid); background: var(--green-pale); }
+.hero-stats { display: flex; gap: 32px; }
+.hero-stat { display: flex; flex-direction: column; }
+.hero-stat-num { font-family: var(--serif); font-size: 24px; font-weight: 700; color: var(--green-mid); }
+.hero-stat-label { font-size: 13px; color: var(--ink-muted); margin-top: 2px; }
+.hero-stat-divider { width: 1px; background: var(--paper-deep); }
+
+/* ── HERO VISUAL ── */
+.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+.book-stack { position: relative; width: 320px; height: 420px; }
+.book-card {
+  position: absolute; border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s ease;
+}
+.book-main {
+  width: 280px; height: 380px;
+  background: var(--green-dark);
+  left: 20px; top: 0;
+  transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+  overflow: hidden;
+}
+.book-main:hover { transform: perspective(800px) rotateY(-4deg) rotateX(1deg) translateY(-8px); }
+.book-main-inner { padding: 36px 28px; height: 100%; display: flex; flex-direction: column; }
+.book-cover-tag {
+  display: inline-block; background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8); font-size: 11px; padding: 4px 10px;
+  border-radius: 20px; margin-bottom: auto; font-weight: 300;
+  letter-spacing: 0.08em;
+}
+.book-cover-icon { font-size: 48px; margin-bottom: 16px; }
+.book-cover-title {
+  font-family: var(--serif); font-size: 26px; font-weight: 700;
+  color: var(--white); line-height: 1.3; margin-bottom: 10px;
+}
+.book-cover-sub { font-size: 13px; color: rgba(255,255,255,0.6); }
+.book-cover-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-top: auto; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.book-cover-pages { font-size: 12px; color: rgba(255,255,255,0.5); }
+.book-cover-logo { font-family: var(--serif); font-size: 14px; color: rgba(255,255,255,0.4); }
+.book-shadow1 {
+  width: 260px; height: 360px;
+  background: var(--green-soft); opacity: 0.4;
+  left: 36px; top: 20px;
+  transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+  z-index: -1;
+}
+.book-shadow2 {
+  width: 240px; height: 340px;
+  background: var(--green-soft); opacity: 0.2;
+  left: 52px; top: 40px;
+  transform: perspective(800px) rotateY(-8deg) rotateX(2deg);
+  z-index: -2;
+}
+.hero-float-badge {
+  position: absolute; background: var(--white);
+  border-radius: var(--radius-sm); padding: 12px 16px;
+  box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 10px;
+  font-size: 13px; animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.hero-float-badge.badge1 { top: 40px; right: -20px; animation-delay: 0s; }
+.hero-float-badge.badge2 { bottom: 60px; left: -40px; animation-delay: 1.5s; }
+.badge-icon { font-size: 20px; }
+.badge-text strong { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
+.badge-text span { font-size: 11px; color: var(--ink-muted); }
+
+/* ── SECTION COMMON ── */
+section { padding: 100px 48px; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--green-soft); margin-bottom: 16px;
+}
+.section-label::before { content: ''; width: 24px; height: 1.5px; background: var(--green-soft); }
+.section-title {
+  font-family: var(--serif); font-size: 40px; font-weight: 700;
+  color: var(--ink); line-height: 1.25; margin-bottom: 16px;
+}
+.section-sub { font-size: 17px; color: var(--ink-muted); line-height: 1.8; max-width: 560px; }
+
+/* ── HOW IT WORKS ── */
+.how { background: var(--paper-warm); }
+.how-header { text-align: center; margin-bottom: 72px; }
+.how-header .section-label { justify-content: center; }
+.how-header .section-sub { margin: 0 auto; }
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; position: relative; }
+.steps::before {
+  content: ''; position: absolute; top: 52px; left: 10%; right: 10%;
+  height: 1px; background: repeating-linear-gradient(90deg, var(--green-soft) 0, var(--green-soft) 6px, transparent 6px, transparent 14px);
+  opacity: 0.35;
+}
+.step-card {
+  background: var(--white); border-radius: var(--radius-md);
+  padding: 36px 28px 32px; position: relative;
+  box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+  border: 1px solid rgba(45,80,22,0.06);
+}
+.step-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.step-num {
+  position: absolute; top: 20px; right: 20px;
+  font-family: var(--serif); font-size: 52px; font-weight: 700;
+  color: var(--green-light); line-height: 1; pointer-events: none;
+}
+.step-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+.step-title { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+.step-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.8; }
+
+/* ── DESTINATIONS ── */
+.destinations { background: var(--paper); }
+.dest-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+.dest-filters { display: flex; gap: 10px; margin-bottom: 36px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 400;
+  border: 1.5px solid rgba(45,80,22,0.2); background: none;
+  color: var(--ink-muted); cursor: pointer; transition: all 0.2s;
+  font-family: var(--sans);
+}
+.filter-btn:hover, .filter-btn.active { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+.dest-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+.dest-card {
+  border-radius: var(--radius-md); overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: all 0.35s ease;
+  background: var(--white); border: 1px solid rgba(45,80,22,0.06);
+  cursor: pointer;
+}
+.dest-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.dest-card:hover .dest-img { transform: scale(1.06); }
+.dest-img-wrap { height: 200px; overflow: hidden; position: relative; }
+.dest-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 64px;
+}
+.dest-img-bg {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 72px; transition: transform 0.5s ease;
+}
+.dest-card:hover .dest-img-bg { transform: scale(1.06); }
+.dest-badge {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(30,58,15,0.85); color: var(--white);
+  font-size: 12px; padding: 5px 12px; border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+.dest-body { padding: 22px 24px 24px; }
+.dest-city { font-size: 20px; font-weight: 600; color: var(--ink); margin-bottom: 6px; font-family: var(--serif); }
+.dest-meta { font-size: 13px; color: var(--ink-muted); margin-bottom: 16px; }
+.dest-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.dest-tag {
+  font-size: 12px; padding: 4px 10px; border-radius: 6px;
+  background: var(--green-light); color: var(--green-mid); font-weight: 500;
+}
+.dest-link { font-size: 14px; color: var(--green-mid); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+
+/* ── GENERATOR ── */
+.generator { background: var(--paper-warm); padding: 100px 0; }
+.gen-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+.gen-header { text-align: center; margin-bottom: 56px; }
+.gen-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-lg); border: 1px solid rgba(45,80,22,0.08);
+}
+.gen-left { background: var(--white); padding: 40px; overflow-y: auto; max-height: 680px; }
+.gen-right { background: var(--green-pale); padding: 40px; }
+.gen-steps { display: flex; align-items: center; gap: 0; margin-bottom: 36px; }
+.gen-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink-muted);
+}
+.gen-step.active { color: var(--green-mid); font-weight: 600; }
+.gen-step-dot {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(45,80,22,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+}
+.gen-step.active .gen-step-dot { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); }
+.gen-step-line { flex: 1; height: 1px; background: rgba(45,80,22,0.15); margin: 0 8px; }
+.gen-section-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 16px; margin-top: 28px; }
+.gen-section-title:first-of-type { margin-top: 0; }
+.search-box {
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(45,80,22,0.15); background: var(--paper);
+  font-size: 14px; font-family: var(--sans); color: var(--ink);
+  outline: none; transition: border-color 0.2s; margin-bottom: 16px;
+}
+.search-box:focus { border-color: var(--green-soft); }
+.spots-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.spot-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  cursor: pointer; transition: all 0.2s; border: 1.5px solid transparent;
+  background: var(--paper);
+}
+.spot-item:hover { background: var(--green-light); }
+.spot-item.selected { background: var(--green-light); border-color: rgba(45,80,22,0.2); }
+.spot-cb {
+  width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid rgba(45,80,22,0.25); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; background: var(--white);
+}
+.spot-item.selected .spot-cb { background: var(--green-mid); border-color: var(--green-mid); }
+.spot-check { display: none; color: var(--white); font-size: 12px; font-weight: 700; }
+.spot-item.selected .spot-check { display: block; }
+.spot-name { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; }
+.spot-tags { display: flex; gap: 6px; }
+.spot-tag {
+  font-size: 11px; padding: 3px 8px; border-radius: 5px;
+  background: rgba(45,80,22,0.08); color: var(--green-soft); font-weight: 500;
+}
+.grade-btns { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.grade-btn {
+  padding: 12px; text-align: center; border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(45,80,22,0.15); background: var(--paper);
+  cursor: pointer; transition: all 0.2s; font-size: 14px; font-family: var(--sans); color: var(--ink-mid);
+}
+.grade-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+.grade-btn.active { background: var(--green-mid); color: var(--white); border-color: var(--green-mid); font-weight: 500; }
+.theme-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.theme-tag {
+  padding: 8px 16px; border-radius: 20px; font-size: 13px;
+  border: 1.5px solid rgba(45,80,22,0.2); background: none;
+  cursor: pointer; transition: all 0.2s; font-family: var(--sans); color: var(--ink-muted);
+}
+.theme-tag:hover { border-color: var(--green-mid); color: var(--green-mid); }
+.theme-tag.active { background: var(--green-light); border-color: var(--green-mid); color: var(--green-mid); font-weight: 500; }
+.gen-selected-bar {
+  margin-top: 24px; padding: 14px 16px; background: var(--green-light);
+  border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;
+}
+.gen-selected-text { font-size: 14px; color: var(--green-mid); font-weight: 500; }
+.btn-gen {
+  width: 100%; margin-top: 20px; padding: 16px;
+  background: var(--green-mid); color: var(--white);
+  border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500;
+  font-family: var(--sans); cursor: pointer; transition: all 0.25s;
+}
+.btn-gen:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(30,58,15,0.25); }
+
+/* ── PREVIEW PANEL ── */
+.preview-label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-soft); margin-bottom: 24px; }
+.preview-book {
+  background: var(--white); border-radius: var(--radius-md);
+  overflow: hidden; box-shadow: var(--shadow-md);
+  border: 1px solid rgba(45,80,22,0.08);
+}
+.preview-book-cover {
+  background: var(--green-dark); padding: 28px 24px 24px;
+  min-height: 140px; display: flex; flex-direction: column;
+}
+.preview-book-label {
+  font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: auto;
+}
+.preview-book-title {
+  font-family: var(--serif); font-size: 22px; font-weight: 700;
+  color: var(--white); margin-bottom: 6px; margin-top: 16px;
+}
+.preview-book-sub { font-size: 13px; color: rgba(255,255,255,0.55); }
+.preview-toc { padding: 24px; }
+.preview-toc-title { font-size: 13px; font-weight: 600; color: var(--ink-muted); margin-bottom: 16px; letter-spacing: 0.05em; }
+.toc-item {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 14px; color: var(--ink-mid); margin-bottom: 12px;
+  padding-bottom: 12px; border-bottom: 1px dashed rgba(45,80,22,0.1);
+}
+.toc-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.toc-num { font-size: 12px; color: var(--green-soft); font-weight: 600; min-width: 20px; }
+.toc-name { flex: 1; }
+.toc-dots { flex: 1; border-bottom: 1px dotted rgba(45,80,22,0.2); margin: 0 8px; position: relative; top: -4px; }
+.toc-page { font-size: 12px; color: var(--ink-muted); }
+.preview-hint {
+  padding: 16px 24px; background: var(--amber-pale);
+  border-top: 1px solid rgba(196,133,42,0.1);
+  font-size: 13px; color: var(--amber); line-height: 1.6;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+
+/* ── PRICING ── */
+.pricing { background: var(--paper); }
+.pricing-header { text-align: center; margin-bottom: 64px; }
+.pricing-toggle {
+  display: inline-flex; background: var(--paper-deep);
+  border-radius: 20px; padding: 4px; margin-bottom: 16px;
+}
+.toggle-opt {
+  padding: 8px 24px; border-radius: 20px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; border: none; background: none;
+  font-family: var(--sans); color: var(--ink-muted);
+}
+.toggle-opt.active { background: var(--white); color: var(--ink); box-shadow: var(--shadow-sm); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 960px; margin: 0 auto; }
+.price-card {
+  background: var(--white); border-radius: var(--radius-md);
+  padding: 36px 32px; border: 1.5px solid rgba(45,80,22,0.1);
+  position: relative; transition: all 0.3s ease;
+}
+.price-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.price-card.featured {
+  border-color: var(--green-mid); border-width: 2px;
+  transform: scale(1.04);
+}
+.price-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+.price-featured-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--green-mid); color: var(--white);
+  font-size: 12px; font-weight: 600; padding: 5px 16px; border-radius: 20px;
+  white-space: nowrap;
+}
+.price-plan { font-size: 14px; font-weight: 600; color: var(--ink-muted); margin-bottom: 20px; letter-spacing: 0.05em; }
+.price-amount { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+.price-num { font-family: var(--serif); font-size: 48px; font-weight: 700; color: var(--ink); line-height: 1; }
+.price-unit { font-size: 14px; color: var(--ink-muted); }
+.price-desc { font-size: 13px; color: var(--ink-muted); margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid rgba(45,80,22,0.08); }
+.price-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.price-feat { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-mid); }
+.price-feat-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green-light); color: var(--green-mid); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.btn-price {
+  width: 100%; padding: 14px; border-radius: var(--radius-sm);
+  font-size: 15px; font-weight: 500; font-family: var(--sans);
+  cursor: pointer; transition: all 0.25s;
+}
+.btn-price-outline { background: none; border: 1.5px solid rgba(45,80,22,0.25); color: var(--green-mid); }
+.btn-price-outline:hover { border-color: var(--green-mid); background: var(--green-pale); }
+.btn-price-solid { background: var(--green-mid); color: var(--white); border: none; }
+.btn-price-solid:hover { background: var(--green-dark); box-shadow: 0 8px 24px rgba(30,58,15,0.25); }
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--paper-warm); }
+.test-header { text-align: center; margin-bottom: 64px; }
+.test-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+.test-card {
+  background: var(--white); border-radius: var(--radius-md);
+  padding: 32px 28px; border: 1px solid rgba(45,80,22,0.06);
+  box-shadow: var(--shadow-sm); transition: all 0.3s;
+}
+.test-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.test-stars { color: var(--amber); font-size: 16px; margin-bottom: 18px; letter-spacing: 2px; }
+.test-quote { font-size: 15px; color: var(--ink-mid); line-height: 1.85; margin-bottom: 24px; font-style: italic; }
+.test-quote::before { content: '\201C'; font-family: var(--serif); font-size: 32px; color: var(--green-light); line-height: 0; vertical-align: -12px; margin-right: 4px; }
+.test-user { display: flex; align-items: center; gap: 14px; }
+.test-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.test-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.test-role { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); padding: 72px 48px 36px;
+  color: rgba(255,255,255,0.6);
+}
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+.footer-brand {}
+.footer-logo { font-family: var(--serif); font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 16px; }
+.footer-brand-desc { font-size: 14px; line-height: 1.8; max-width: 240px; }
+.footer-col-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 20px; letter-spacing: 0.05em; }
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 13px; }
+.footer-icp { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
+.hero-left > * { animation: fadeInUp 0.7s ease both; }
+.hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-left > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-left > *:nth-child(4) { animation-delay: 0.4s; }
+.hero-left > *:nth-child(5) { animation-delay: 0.5s; }
+.hero-visual { animation: fadeInRight 0.9s 0.3s ease both; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── LINK ── */
+.link-arrow { font-size: 14px; color: var(--green-mid); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+.link-arrow:hover { gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><span class="nav-logo-dot"></span>探学</a>
+  <div class="nav-links">
+    <a href="#destinations">目的地</a>
+    <a href="#samples">样本手册</a>
+    <a href="#pricing">定价</a>
+    <a href="#about">关于我们</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost">登录</button>
+    <button class="btn-primary">免费开始 →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-decor"></div>
+  <div class="hero-bg-lines"></div>
+  <div class="hero-left">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      已覆盖 12 座城市 · 200+ 热门景点
+    </div>
+    <h1 class="hero-title">
+      <em>你的行程，</em><br>
+      <span class="line2">你的专属研学手册</span>
+    </h1>
+    <p class="hero-sub">
+      不是通用模板，而是根据孩子的<strong>真实行程</strong>和<strong>所在学段</strong>，
+      即时生成与课程内容深度关联的个性化研学手册。行程有变？随时调整。
+    </p>
+    <div class="hero-btns">
+      <button class="btn-hero-main">开始定制手册 →</button>
+      <button class="btn-hero-sec">查看样本手册</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">2,400+</span>
+        <span class="hero-stat-label">家长使用</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">小学–高中</span>
+        <span class="hero-stat-label">全学段覆盖</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">4.9 ★</span>
+        <span class="hero-stat-label">用户好评</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="book-stack">
+      <div class="book-card book-shadow2"></div>
+      <div class="book-card book-shadow1"></div>
+      <div class="book-card book-main">
+        <div class="book-main-inner">
+          <span class="book-cover-tag">2025 · 春季研学</span>
+          <div class="book-cover-icon">🏯</div>
+          <div class="book-cover-title">北京研学手册</div>
+          <div class="book-cover-sub">初中版 · 历史文化专题</div>
+          <div class="book-cover-footer">
+            <span class="book-cover-pages">32 页 · 4 处景点</span>
+            <span class="book-cover-logo">探学</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-float-badge badge1">
+      <span class="badge-icon">✅</span>
+      <div class="badge-text">
+        <strong>关联课本知识点</strong>
+        <span>人教版历史七年级上</span>
+      </div>
+    </div>
+    <div class="hero-float-badge badge2">
+      <span class="badge-icon">🔄</span>
+      <div class="badge-text">
+        <strong>行程变动？随时修改</strong>
+        <span>72小时内免费调整</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-header reveal">
+    <div class="section-label">使用流程</div>
+    <h2 class="section-title">四步，生成你的专属手册</h2>
+    <p class="section-sub">从选景点到拿到手册，最快 3 分钟完成</p>
+  </div>
+  <div class="steps">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <span class="step-icon">🗺️</span>
+      <div class="step-title">选择目的地</div>
+      <p class="step-desc">从覆盖城市中选择你的研学目的地，浏览所有可选景点及内容预览。</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">02</div>
+      <span class="step-icon">🏛️</span>
+      <div class="step-title">勾选景点</div>
+      <p class="step-desc">从知识库中选择孩子实际会去的景点，系统自动匹配相关课程知识点。</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <span class="step-icon">🎓</span>
+      <div class="step-title">设定学段</div>
+      <p class="step-desc">选择孩子的年级和主题偏好，手册内容深度与课本同步，学有所用。</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">04</div>
+      <span class="step-icon">📖</span>
+      <div class="step-title">下载手册</div>
+      <p class="step-desc">支付后即时生成 PDF，发送至邮箱。行程有变可回来修改，重新生成。</p>
+    </div>
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="destinations" id="destinations">
+  <div class="dest-header reveal">
+    <div>
+      <div class="section-label">研学目的地</div>
+      <h2 class="section-title">已覆盖的热门城市</h2>
+    </div>
+    <a href="#" class="link-arrow">查看全部城市 →</a>
+  </div>
+  <div class="dest-filters reveal">
+    <button class="filter-btn active">全部</button>
+    <button class="filter-btn">华北</button>
+    <button class="filter-btn">华东</button>
+    <button class="filter-btn">西南</button>
+    <button class="filter-btn">西北</button>
+    <button class="filter-btn">华南</button>
+  </div>
+  <div class="dest-grid">
+    <div class="dest-card reveal">
+      <div class="dest-img-wrap">
+        <div class="dest-img-bg" style="background: linear-gradient(135deg,#E8F0E0,#c8ddb8);">🏯</div>
+        <span class="dest-badge">32 个景点</span>
+      </div>
+      <div class="dest-body">
+        <div class="dest-city">北京</div>
+        <div class="dest-meta">覆盖 6 个学科 · 适合全学段</div>
+        <div class="dest-tags">
+          <span class="dest-tag">历史文化</span>
+          <span class="dest-tag">科学探索</span>
+          <span class="dest-tag">艺术审美</span>
+        </div>
+        <a href="#" class="dest-link">查看景点 →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal">
+      <div class="dest-img-wrap">
+        <div class="dest-img-bg" style="background: linear-gradient(135deg,#F5E6C8,#e8d0a0);">🕌</div>
+        <span class="dest-badge">28 个景点</span>
+      </div>
+      <div class="dest-body">
+        <div class="dest-city">西安</div>
+        <div class="dest-meta">覆盖 5 个学科 · 适合初中高中</div>
+        <div class="dest-tags">
+          <span class="dest-tag">历史文化</span>
+          <span class="dest-tag">地理自然</span>
+        </div>
+        <a href="#" class="dest-link">查看景点 →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal">
+      <div class="dest-img-wrap">
+        <div class="dest-img-bg" style="background: linear-gradient(135deg,#E0EFF5,#b8d8e8);">🐼</div>
+        <span class="dest-badge">24 个景点</span>
+      </div>
+      <div class="dest-body">
+        <div class="dest-city">成都</div>
+        <div class="dest-meta">覆盖 5 个学科 · 适合小学初中</div>
+        <div class="dest-tags">
+          <span class="dest-tag">自然生态</span>
+          <span class="dest-tag">历史文化</span>
+        </div>
+        <a href="#" class="dest-link">查看景点 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENERATOR -->
+<section class="generator" id="generator">
+  <div class="gen-inner">
+    <div class="gen-header reveal">
+      <div class="section-label">在线生成</div>
+      <h2 class="section-title">试试手册生成器</h2>
+      <p class="section-sub" style="margin:0 auto">选择你的景点和学段，右侧实时预览手册结构</p>
+    </div>
+    <div class="gen-layout reveal">
+      <!-- LEFT -->
+      <div class="gen-left">
+        <div class="gen-steps">
+          <div class="gen-step active">
+            <div class="gen-step-dot">1</div>
+            <span>选景点</span>
+          </div>
+          <div class="gen-step-line"></div>
+          <div class="gen-step">
+            <div class="gen-step-dot">2</div>
+            <span>设学段</span>
+          </div>
+          <div class="gen-step-line"></div>
+          <div class="gen-step">
+            <div class="gen-step-dot">3</div>
+            <span>预览</span>
+          </div>
+          <div class="gen-step-line"></div>
+          <div class="gen-step">
+            <div class="gen-step-dot">4</div>
+            <span>生成</span>
+          </div>
+        </div>
+
+        <div class="gen-section-title">选择景点</div>
+        <input type="text" class="search-box" placeholder="🔍  搜索景点名称...">
+        <div class="spots-list" id="spotsList">
+          <div class="spot-item selected" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">故宫博物院</span>
+            <div class="spot-tags"><span class="spot-tag">历史</span><span class="spot-tag">初中+</span></div>
+          </div>
+          <div class="spot-item selected" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">天安门广场</span>
+            <div class="spot-tags"><span class="spot-tag">历史</span><span class="spot-tag">全学段</span></div>
+          </div>
+          <div class="spot-item" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">颐和园</span>
+            <div class="spot-tags"><span class="spot-tag">历史</span><span class="spot-tag">自然</span></div>
+          </div>
+          <div class="spot-item" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">国家博物馆</span>
+            <div class="spot-tags"><span class="spot-tag">历史</span><span class="spot-tag">小学+</span></div>
+          </div>
+          <div class="spot-item" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">北京自然博物馆</span>
+            <div class="spot-tags"><span class="spot-tag">科学</span><span class="spot-tag">小学+</span></div>
+          </div>
+          <div class="spot-item" onclick="toggleSpot(this)">
+            <div class="spot-cb"><span class="spot-check">✓</span></div>
+            <span class="spot-name">天坛公园</span>
+            <div class="spot-tags"><span class="spot-tag">历史</span><span class="spot-tag">初中+</span></div>
+          </div>
+        </div>
+
+        <div class="gen-selected-bar">
+          <span class="gen-selected-text" id="selectedCount">已选 2 个景点</span>
+          <a href="#" class="dest-link" style="font-size:13px">清空</a>
+        </div>
+
+        <div class="gen-section-title">选择学段</div>
+        <div class="grade-btns">
+          <button class="grade-btn" onclick="selectGrade(this)">小学（1–6年级）</button>
+          <button class="grade-btn active" onclick="selectGrade(this)">初中（7–9年级）</button>
+          <button class="grade-btn" onclick="selectGrade(this)">高中（10–12年级）</button>
+        </div>
+
+        <div class="gen-section-title">主题偏好</div>
+        <div class="theme-tags">
+          <button class="theme-tag active" onclick="this.classList.toggle('active')">历史文化</button>
+          <button class="theme-tag active" onclick="this.classList.toggle('active')">科学探索</button>
+          <button class="theme-tag" onclick="this.classList.toggle('active')">艺术审美</button>
+          <button class="theme-tag" onclick="this.classList.toggle('active')">地理自然</button>
+        </div>
+
+        <button class="btn-gen">预览手册内容 →</button>
+      </div>
+
+      <!-- RIGHT PREVIEW -->
+      <div class="gen-right">
+        <div class="preview-label">手册预览</div>
+        <div class="preview-book">
+          <div class="preview-book-cover">
+            <div class="preview-book-label">探学 · 2025 春季研学</div>
+            <div class="preview-book-title" id="previewTitle">北京研学手册</div>
+            <div class="preview-book-sub" id="previewSub">初中版 · 历史文化专题 · 2 处景点</div>
+          </div>
+          <div class="preview-toc">
+            <div class="preview-toc-title">目录</div>
+            <div id="tocList">
+              <div class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-name">故宫博物院</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page">P.2</span>
+              </div>
+              <div class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-name">天安门广场</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page">P.10</span>
+              </div>
+              <div class="toc-item">
+                <span class="toc-num" style="color:var(--ink-muted)">附</span>
+                <span class="toc-name" style="color:var(--ink-muted)">课程关联知识点</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page">P.18</span>
+              </div>
+              <div class="toc-item">
+                <span class="toc-num" style="color:var(--ink-muted)">附</span>
+                <span class="toc-name" style="color:var(--ink-muted)">趣味探索活动</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page">P.22</span>
+              </div>
+            </div>
+          </div>
+          <div class="preview-hint">
+            💡 付费后生成完整手册，含景点详解、知识卡片、互动活动。行程变动可免费修改一次。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLES -->
+<section id="samples" style="background:var(--paper); padding:100px 48px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;" class="reveal">
+    <div>
+      <div class="section-label">样本手册</div>
+      <h2 class="section-title">买前先看，真实样本</h2>
+      <p class="section-sub">以下均为真实生成的研学手册节选，非模板演示</p>
+    </div>
+    <a href="#" class="link-arrow">查看全部样本 →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+    <div class="dest-card reveal" style="cursor:default;">
+      <div class="dest-img-wrap">
+        <div style="width:100%;height:100%;background:var(--green-dark);display:flex;flex-direction:column;justify-content:flex-end;padding:24px;">
+          <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--white);">北京研学手册</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">初中版 · 历史文化</div>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <span class="dest-tag">32页</span>
+          <span class="dest-tag">4处景点</span>
+          <span class="dest-tag">初中</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-muted);line-height:1.7;margin-bottom:16px;">含故宫、天坛、颐和园、国博的详细介绍，关联人教版历史七年级课本内容。</p>
+        <a href="#" class="dest-link">查看完整样本 →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal" style="cursor:default;">
+      <div class="dest-img-wrap">
+        <div style="width:100%;height:100%;background:#4A3A28;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;">
+          <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--white);">西安研学手册</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">小学版 · 历史探索</div>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <span class="dest-tag">28页</span>
+          <span class="dest-tag">3处景点</span>
+          <span class="dest-tag">小学</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-muted);line-height:1.7;margin-bottom:16px;">含兵马俑、大雁塔、城墙，语言生动活泼，含趣味任务卡片，适合5–6年级。</p>
+        <a href="#" class="dest-link">查看完整样本 →</a>
+      </div>
+    </div>
+    <div class="dest-card reveal" style="cursor:default;">
+      <div class="dest-img-wrap">
+        <div style="width:100%;height:100%;background:#1A3545;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;">
+          <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--white);">成都研学手册</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">初中版 · 自然生态</div>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <span class="dest-tag">24页</span>
+          <span class="dest-tag">3处景点</span>
+          <span class="dest-tag">初中</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-muted);line-height:1.7;margin-bottom:16px;">含大熊猫基地、三星堆博物馆，关联生物、历史课本，含科学探究活动设计。</p>
+        <a href="#" class="dest-link">查看完整样本 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header reveal">
+    <div class="section-label">定价方案</div>
+    <h2 class="section-title">选择适合你的方案</h2>
+    <p class="section-sub" style="margin:0 auto 28px;">所有方案均支持 72 小时内免费修改</p>
+    <div class="pricing-toggle">
+      <button class="toggle-opt active">个人用户</button>
+      <button class="toggle-opt">机构采购</button>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-plan">单次生成</div>
+      <div class="price-amount">
+        <span class="price-num">¥39</span>
+        <span class="price-unit">/ 次</span>
+      </div>
+      <p class="price-desc">偶尔出行的家庭，按需购买</p>
+      <div class="price-features">
+        <div class="price-feat"><div class="price-feat-icon">✓</div>生成 1 份定制手册</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>72小时内免费修改 1 次</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>PDF 下载 + 邮件备份</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>账户内永久保存</div>
+      </div>
+      <button class="btn-price btn-price-outline">立即购买</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-featured-badge">★ 最受欢迎</div>
+      <div class="price-plan">手册包</div>
+      <div class="price-amount">
+        <span class="price-num">¥99</span>
+        <span class="price-unit">/ 3次</span>
+      </div>
+      <p class="price-desc">计划多次出行，单次成本更低</p>
+      <div class="price-features">
+        <div class="price-feat"><div class="price-feat-icon">✓</div>生成 3 份定制手册</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>每份可修改 3 次</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>72小时内免费修改</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>PDF + 在线阅读</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>优先客服支持</div>
+      </div>
+      <button class="btn-price btn-price-solid">立即购买</button>
+    </div>
+    <div class="price-card">
+      <div class="price-plan">年度订阅</div>
+      <div class="price-amount">
+        <span class="price-num">¥199</span>
+        <span class="price-unit">/ 年</span>
+      </div>
+      <p class="price-desc">老师或频繁出行的家庭，无限使用</p>
+      <div class="price-features">
+        <div class="price-feat"><div class="price-feat-icon">✓</div>无限次生成手册</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>无限次修改</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>新城市内容优先体验</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>专属客服 1 对 1</div>
+        <div class="price-feat"><div class="price-feat-icon">✓</div>机构合作折扣</div>
+      </div>
+      <button class="btn-price btn-price-outline">立即订阅</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="test-header reveal">
+    <div class="section-label">用户评价</div>
+    <h2 class="section-title">他们都在用探学</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">孩子去故宫前用这个手册预习，到了现场对很多知识点都有印象，比我买的那本通用手册实用太多了。而且关联了课本内容，回来后老师讲的知识都能联系上。</p>
+      <div class="test-user">
+        <div class="test-avatar" style="background:var(--green-light);">👩</div>
+        <div>
+          <div class="test-name">李女士</div>
+          <div class="test-role">初一学生家长 · 北京故宫行程</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">我们学校组织的研学活动，之前一直用某出版社的通用手册，学生反馈景点对不上。用了探学之后，可以按我们实际行程定制，学生参与感强多了。</p>
+      <div class="test-user">
+        <div class="test-avatar" style="background:var(--amber-pale);">👨</div>
+        <div>
+          <div class="test-name">王老师</div>
+          <div class="test-role">初中历史老师 · 西安研学活动</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">出发前一天临时改了一个景点，联系客服后当天就更新了手册重新发给我。服务很及时，手册质量也很好，排版比我自己做的专业多了。</p>
+      <div class="test-user">
+        <div class="test-avatar" style="background:var(--paper-deep);">👩</div>
+        <div>
+          <div class="test-name">张女士</div>
+          <div class="test-role">小学生家长 · 成都三日游</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="about">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">探学</div>
+      <p class="footer-brand-desc">让每一次研学都有意义。<br>基于课本知识库，为孩子的每一段行程生成专属研学手册。</p>
+    </div>
+    <div>
+      <div class="footer-col-title">产品</div>
+      <div class="footer-links">
+        <a href="#">目的地</a>
+        <a href="#">样本手册</a>
+        <a href="#">定价</a>
+        <a href="#">手册生成器</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">支持</div>
+      <div class="footer-links">
+        <a href="#">使用指南</a>
+        <a href="#">常见问题</a>
+        <a href="#">退款政策</a>
+        <a href="#">联系我们</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">合作</div>
+      <div class="footer-links">
+        <a href="#">学校合作</a>
+        <a href="#">旅行社合作</a>
+        <a href="#">内容共建</a>
+        <a href="#">加入我们</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 探学 · 你的行程，你的专属研学手册</div>
+    <div class="footer-icp">沪ICP备XXXXXXXX号</div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.dataset.delay = (i % 4) * 80;
+  observer.observe(el);
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Toggle pricing
+document.querySelectorAll('.toggle-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+  });
+});
+
+// Spot selection
+function toggleSpot(el) {
+  el.classList.toggle('selected');
+  updateCount();
+  updatePreview();
+}
+
+function updateCount() {
+  const count = document.querySelectorAll('.spot-item.selected').length;
+  document.getElementById('selectedCount').textContent = `已选 ${count} 个景点`;
+}
+
+function updatePreview() {
+  const selected = [...document.querySelectorAll('.spot-item.selected')];
+  const names = selected.map(el => el.querySelector('.spot-name').textContent);
+  const grade = document.querySelector('.grade-btn.active')?.textContent || '初中';
+  const gradeShort = grade.includes('小学') ? '小学版' : grade.includes('高中') ? '高中版' : '初中版';
+  document.getElementById('previewSub').textContent = `${gradeShort} · 历史文化专题 · ${names.length} 处景点`;
+  const toc = document.getElementById('tocList');
+  let pages = 2;
+  const items = names.map((name, i) => {
+    const p = pages;
+    pages += 8;
+    return `<div class="toc-item">
+      <span class="toc-num">0${i+1}</span>
+      <span class="toc-name">${name}</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page">P.${p}</span>
+    </div>`;
+  });
+  items.push(`<div class="toc-item">
+    <span class="toc-num" style="color:var(--ink-muted)">附</span>
+    <span class="toc-name" style="color:var(--ink-muted)">课程关联知识点</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page">P.${pages}</span>
+  </div>`);
+  items.push(`<div class="toc-item">
+    <span class="toc-num" style="color:var(--ink-muted)">附</span>
+    <span class="toc-name" style="color:var(--ink-muted)">趣味探索活动</span>
+    <span class="toc-dots"></span>
+    <span class="toc-page">P.${pages+4}</span>
+  </div>`);
+  toc.innerHTML = items.join('');
+}
+
+function selectGrade(el) {
+  document.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updatePreview();
+}
+</script>
+</body>
+</html>
